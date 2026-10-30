@@ -1,0 +1,472 @@
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../fonts/JetBrainsMono-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('../fonts/JetBrainsMono-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Caveat';
+    src: url('../fonts/Caveat-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+:root {
+    --max-width: 600px;
+    --text-color: #e6edf3;
+    --background-color: #0d1117;
+    --gray-text-color: #848d97;
+    --dark-gray-text-color: #6e7681;
+    --transition-time: 0.5s;
+    --main-font: 'JetBrains Mono', monospace;
+    --main-text-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --handwriting-font: 'Caveat', cursive;
+}
+
+[data-theme="light"] {
+    --text-color: #1f2328;
+    --background-color: #ffffff;
+    --gray-text-color: #656d76;
+    --dark-gray-text-color: #6e7781;
+}
+
+body {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color var(--transition-time) ease, color var(--transition-time) ease;
+}
+
+img {
+    color: var(--text-color);
+    max-width: 100%;
+    height: auto;
+    filter: invert(1) hue-rotate(180deg);
+    transition: filter var(--transition-time) ease;
+}
+
+a {
+    color: inherit;
+}
+
+.content-container p,
+.content-container ul,
+.content-container li {
+    font-family: var(--main-text-font);
+    font-size: 1.2rem;
+}
+
+code,
+pre {
+    font-family: var(--main-font);
+    font-size: 1rem;
+}
+
+/* Inline code only — fenced code blocks (<pre><code>) get their own
+   background from .highlight in code-theme.css, so exclude those here. */
+:not(pre) > code {
+    background-color: rgba(175, 184, 193, 0.2);
+    padding: 0.1em 0.25em;
+    border-radius: 0.25em;
+    /* Without this, a wrapped inline code span gets padding/rounding only
+       on its outer edges — the line break itself is a flat, padding-less
+       cut. "clone" makes each wrapped line its own fully rounded pill. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: 700;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+}
+
+
+footer {
+    font-family: var(--main-font);
+    margin: 2rem 0;
+}
+
+[data-theme="light"] img {
+    filter: none;
+}
+
+header {
+    font-family: var(--main-font);
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.header-content h3 {
+    margin: 0;
+}
+
+.header-content a {
+    text-decoration: none;
+}
+
+#name-tag {
+    color: var(--text-color);
+    transition: color var(--transition-time) ease;
+}
+
+#name-tag:hover {
+    color: var(--text-color);
+}
+
+.post-list a {
+    text-decoration: none;
+}
+
+.post-item {
+    padding-bottom: 1.5rem;
+}
+
+.post-item-title {
+    font-size: 1.2rem;
+}
+
+.post-item-subtitle {
+    font-size: 0.875rem;
+}
+
+.post-item-date {
+    font-size: 0.875rem;
+    color: var(--gray-text-color);
+    transition: color var(--transition-time) ease;
+}
+
+.title {
+    margin: 4rem 0 2rem 0;
+}
+
+.subtitle {
+    margin: 2rem 0;
+    font-style: normal;
+}
+
+.date {
+    font-size: 0.875rem;
+    color: var(--gray-text-color);
+    margin: 2rem auto;
+    transition: color var(--transition-time) ease;
+}
+
+.content-container {
+    font-family: var(--main-font);
+    max-width: var(--max-width);
+    margin: 0rem auto;
+    padding: 0;
+}
+
+.svg-figure {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.svg-figure svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+.svg-figure svg g[id*="text_"],
+.svg-figure svg g[id*="text_"] use {
+    fill: var(--text-color);
+}
+
+.svg-figure figcaption {
+    font-family: var(--main-text-font);
+    font-size: 0.75rem;
+    color: var(--gray-text-color);
+    margin-top: 0.5rem;
+    transition: color var(--transition-time) ease;
+}
+
+.emoji {
+    display: none;
+}
+
+.corner-left {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text-color);
+    transition: color var(--transition-time) ease;
+}
+
+.corner-left:hover {
+    color: var(--text-color);
+}
+
+@media (max-width: 600px) {
+    .corner-left {
+        left: 0.5rem;
+    }
+
+    #theme-toggle {
+        right: 0.5rem;
+    }
+
+    .content-container {
+        margin: 0;
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    /* Disable hover effect for name-tag in mobile mode */
+    #name-tag:hover {
+        color: var(--dark-gray-text-color) !important;
+    }
+}
+
+table,
+th,
+td {
+    border: 1px solid var(--text-color);
+    border-collapse: collapse;
+    transition: border-color var(--transition-time) ease;
+}
+
+th,
+td {
+    padding: 6px 12px;
+}
+
+th {
+    text-align: left;
+}
+
+table {
+    width: 100%;
+}
+
+.footer-content {
+    color: var(--dark-gray-text-color);
+    text-align: center;
+    font-size: 0.875em;
+    transition: color var(--transition-time) ease;
+}
+
+.footer-content a {
+    text-decoration: none;
+}
+
+.bootstrap-icon {
+    color: var(--text-color);
+    fill: var(--text-color);
+    transition: color var(--transition-time) ease, fill var(--transition-time) ease;
+}
+
+#theme-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-text-color);
+    transition: color var(--transition-time) ease;
+}
+
+#theme-toggle:hover {
+    color: var(--text-color);
+}
+
+/* Print view utilities */
+.print-only {
+    display: none !important;
+}
+
+@media print {
+
+    /* Force light colors for print */
+    :root {
+        --text-color: #000 !important;
+        --background-color: #fff !important;
+        --gray-text-color: #555 !important;
+        --dark-gray-text-color: #666 !important;
+
+    }
+
+    @page {
+        margin: 12mm;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 10pt;
+    }
+
+    /* Expand content to page width for readability */
+    .content-container {
+        max-width: 100% !important;
+        margin: 2rem !important;
+        padding: 0 !important;
+    }
+
+    .margin {
+        margin: 0 !important;
+    }
+
+    /* Hide navigation and non-essential UI */
+    header,
+    footer,
+    .toggle-container,
+    .bootstrap-icon,
+    .post-list,
+    .pagination,
+    button {
+        display: none !important;
+    }
+
+    /* Respect explicit utilities */
+    .no-print {
+        display: none !important;
+    }
+
+    .print-only {
+        display: initial !important;
+    }
+
+    /* Images: remove dark-mode inversion for print */
+    img {
+        filter: none !important;
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Links: show destination after text, except for reference back-links */
+    a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 100%;
+        color: #555;
+        word-break: break-all;
+    }
+
+    a.reference-back-link::after,
+    a.citation-link::after {
+        content: "";
+    }
+
+    a {
+        text-decoration: none !important;
+        color: #000 !important;
+    }
+
+    /* Code blocks: wrap and ensure contrast */
+    pre,
+    code {
+        white-space: pre-wrap !important;
+        word-break: break-word;
+        background: transparent !important;
+        color: #000 !important;
+    }
+
+    pre {
+        border: 1px solid #ccc;
+        padding: 8px;
+    }
+
+    /* Tables: ensure borders and avoid page breaks inside */
+    table {
+        page-break-inside: avoid;
+        break-inside: avoid;
+        border-color: #000 !important;
+    }
+
+    tr,
+    img,
+    /* pre, */
+    blockquote {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+        break-after: avoid;
+    }
+
+    h2 {
+        font-size: 1.25rem !important;
+    }
+
+    h3 {
+        font-size: 1rem !important;
+    }
+
+    /* Print-only author styling */
+    .author-print {
+        display: block !important;
+        font-weight: 700;
+        margin: 1rem 0;
+    }
+
+    .title-print {
+        display: block !important;
+        margin: 1rem 0;
+        font-size: 1.5rem !important;
+    }
+
+    .subtitle {
+        display: block !important;
+        margin: 1rem 0;
+    }
+}

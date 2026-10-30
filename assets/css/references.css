@@ -1,0 +1,127 @@
+@counter-style empty-style {
+    system: extends decimal;
+    /* Extend the default decimal system */
+    suffix: '   ';
+    /* Use an empty string as a suffix to remove the period */
+}
+
+
+.reference-list {
+    list-style: empty-style;
+    /* Apply the custom counter style to the ordered list */
+    margin-left: 0;
+    padding-left: 1.5rem;
+}
+
+.reference-list li {
+    margin-bottom: 1rem;
+}
+
+.reference-list li::marker {
+    font-size: 0.875rem;
+    color: var(--gray-text-color);
+}
+
+.reference-url {
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: var(--gray-text-color);
+}
+
+.reference-back-link {
+    text-decoration: none;
+    color: var(--gray-text-color);
+}
+
+.citation-link {
+    text-decoration: none;
+    color: var(--gray-text-color);
+}
+
+.csl-bib-body {
+    font-family: var(--main-font);
+    font-size: 0.875rem;
+}
+
+/* Print-only citation styling: use bracketed [n] inline and in the reference list */
+@media print {
+
+    /* Inline citations: make superscripts baseline and wrap in brackets */
+    sup {
+        vertical-align: baseline !important;
+        font-size: inherit !important;
+        line-height: inherit !important;
+    }
+
+    sup .citation-link {
+        text-decoration: none !important;
+        color: #000 !important;
+    }
+
+    /* Add brackets around the inline citation numbers, e.g., [1] or [1,2] */
+    sup .citation-link::before {
+        content: " [";
+    }
+
+    sup .citation-link::after {
+        content: "]";
+    }
+
+    /* References list: render [1], [2] … and hide backlink arrows in print */
+    .reference-list {
+        list-style: none !important;
+        counter-reset: ref;
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    .reference-list li {
+        counter-increment: ref;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: baseline;
+        flex-wrap: nowrap;
+        /* keep [n] and first line together */
+    }
+
+    /* Allow the citation content to shrink and wrap next to [n] instead of moving to a new flex line */
+    .reference-list li>* {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    /* Keep the [n] marker size consistent with the reference text size */
+    .reference-list li::before {
+        content: "[" counter(ref) "]";
+        color: #000;
+        display: inline-block;
+        margin-right: 0.4em;
+        flex: 0 0 auto;
+        font-size: 90% !important;
+    }
+
+    .reference-back-link {
+        display: none !important;
+    }
+
+    /* Show URL text instead of the arrow, keep link clickable */
+    .reference-url {
+        color: transparent !important;
+        /* hide the arrow glyph */
+        text-decoration: none !important;
+    }
+
+    .reference-url::after {
+        content: "(" attr(href) ")";
+        font-size: 80% !important;
+        color: #555 !important;
+        word-break: break-all;
+    }
+
+    /* Make references slightly smaller than body text in print, like on web */
+    .reference-list,
+    .csl-bib-body {
+        font-size: 90% !important;
+    }
+
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>if (window.location.hostname.endsWith('haifengjin.com')) {(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-57PK4DJ8');}</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Applies the saved/preferred theme before first paint, so the page
+         never paints dark-then-corrects-to-light. Must run before the
+         stylesheets so the right CSS variables are already in play. -->
+    <script>
+        (function () {
+            var mode = localStorage.getItem('theme') || 'system';
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <title>TPUs Are Finally for Sale, But Why?</title>
+    <link rel="stylesheet" href="/assets/css/code-theme.css?v=2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=2">
+    <link rel="stylesheet" href="/assets/css/references.css?v=2">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="Haifeng Jin" href="/feed.xml">
+    <link rel="canonical" href="https://haifengjin.com/tpus-are-finally-for-sale-but-why/">
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: ['base', 'ams']
+            },
+            svg: {
+                fontCache: 'none'
+            }
+        };
+    </script>
+    <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+<body>
+    
+    <a class="corner-left no-print" href="/" aria-label="Back to home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+    
+    <!-- Theme toggle: cycles Light -> Dark -> System on click (theme.js) -->
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    <div class="margin">
+
+
+        <article class="content-container">
+
+            
+        <h1 class="title no-print">TPUs Are Finally <br> for Sale, <br> But Why?</h1>
+        <h1 class="title-print print-only">
+            TPUs Are Finally for Sale, But Why?
+        </h1>
+        <div class="subtitle">An analysis of Google's entry into the AI chip market</div>
+        <p class="print-only author-print">Haifeng Jin, October 2026</p>
+        <div class="date no-print">by <a href="/about" style="text-decoration: none;">Haifeng Jin</a>, October 2026</div>
+
+        <p>Ever since Google first unveiled its custom Tensor Processing Unit (TPU) in 2016<sup id="cite-1-a"><a href="#ref-1" class="citation-link">1</a></sup><sup id="cite-2-a"><a href="#ref-2" class="citation-link">2</a></sup>, the hardware was guarded like a crown jewel. For a full decade, Google maintained an unbroken rule that not a single data center TPU was allowed to leave its proprietary data centers. The silicon was exceptionally powerful, yet the only way external developers could ever touch it was by renting virtual machines through Google Cloud Platform. Outside of Google's walled garden, these TPUs simply did not exist.</p>
+<p>Now, that ten-year doctrine has suddenly collapsed. Google Cloud officially confirmed a historic strategic shift, announcing that it is deploying TPU hardware directly inside external, third-party data centers, beginning with a major partnership to bring TPUs to Oracle Cloud Infrastructure<sup id="cite-3-a"><a href="#ref-3" class="citation-link">3</a></sup>.</p>
+<p>In this article, we revisit why Google held back for so long, analyze the financial realities driving its sudden reversal, evaluate the structural advantages it brings to the AI chip market, explore the technical co-design implications for open-source AI development, and weigh the challenges ahead.</p>
+<p>DISCLAIMER: The views expressed in this article are solely those of the author and do not necessarily reflect the opinions or viewpoints of Google or its affiliates. The entirety of the information presented within this article is sourced exclusively from publicly available materials.</p>
+<h2>What happened?</h2>
+<p>In an official announcement, Google Cloud confirmed that it is bringing physical TPU hardware into Oracle Cloud Infrastructure data centers<sup id="cite-3-b"><a href="#ref-3" class="citation-link">3</a></sup>. Crucially, this is not just another way to rent compute on Google Cloud Platform. The hardware will be installed outside Google-operated infrastructure and run within Oracle facilities, letting customers access Google silicon without migrating their existing data center architecture.</p>
+<p>The announcement follows Alphabet's second-quarter 2026 earnings disclosures, where management highlighted surging demand from compute-intensive sectors, including frontier AI labs, quantitative finance firms, and high-performance computing centers<sup id="cite-4-a"><a href="#ref-4" class="citation-link">4</a></sup>. While major labs like Anthropic have long relied on Google Cloud TPUs<sup id="cite-5-a"><a href="#ref-5" class="citation-link">5</a></sup>, physically deploying silicon inside external operators marks an entirely new chapter for Google.</p>
+<h2>Why didn't Google do this earlier?</h2>
+<p>In our previous <a href="/tpus-are-not-for-sale-but-why/">blog post</a>, we discussed why Google doesn't sell TPUs. The TPU project was originally created strictly for Google's own internal services rather than as a commercial silicon product. Adapting the hardware and software for third-party deployments would have demanded substantial extra work<sup id="cite-6-a"><a href="#ref-6" class="citation-link">6</a></sup>. Following the launch of ChatGPT, Google chose to direct its resources toward closing the model capability gap with OpenAI, staying laser-focused on model quality rather than taking on the distraction and operational overhead of supporting external hardware clients.</p>
+<p>However, things are different now. Google has steadily improved its model intelligence and closed the capability gap with OpenAI. When Gemini 3 Pro debuted in late 2025, it claimed the number one spot on the Artificial Analysis Intelligence Index<sup id="cite-7-a"><a href="#ref-7" class="citation-link">7</a></sup><sup id="cite-8-a"><a href="#ref-8" class="citation-link">8</a></sup>. Even as rival labs pushed out newer models, Google maintained its standing at the frontier. The later release of Gemini 4 Argon<sup id="cite-9-a"><a href="#ref-9" class="citation-link">9</a></sup> reinforced Google's position among the elite tier of frontier reasoning models. With its models now performing at the highest tier across industry benchmarks, frontier model development no longer demands the company's undivided defensive focus.</p>
+<h2>The financial pressure</h2>
+<p>The main driver behind selling TPUs directly is financial reality. Big tech companies like Google, Microsoft, Amazon, and Meta are all aggressively expanding their data center footprints<sup id="cite-10-a"><a href="#ref-10" class="citation-link">10</a></sup> to meet a surge in inference demand, with token consumption projected to grow exponentially in the coming years<sup id="cite-11-a"><a href="#ref-11" class="citation-link">11</a></sup>. However, building massive AI data centers requires staggering amounts of capital expenditure. In the second quarter of 2026, Google's free cash flow fell under severe pressure, dipping into negative territory as quarterly capital expenditures surged to unprecedented levels to build out this compute infrastructure<sup id="cite-12-a"><a href="#ref-12" class="citation-link">12</a></sup>.</p>
+<p>Google needs new revenue streams to boost its cash flow. In the AI industry, one of the most lucrative business models right now is selling chips. For now, buyers can often make the hardware pay for itself simply by setting up hosted inference services and selling tokens directly on platforms like OpenRouter<sup id="cite-13-a"><a href="#ref-13" class="citation-link">13</a></sup>. Remarkably, even with token prices among the lowest in the industry, economic estimates from DeepSeek's operational disclosures suggest hardware procurement costs can be recouped in as little as 10 months at high utilization<sup id="cite-14-a"><a href="#ref-14" class="citation-link">14</a></sup>. Because short payback cycles make compute clusters financially attractive even under aggressive token pricing, buyers have continued to aggressively snap up available hardware capacity across the market<sup id="cite-15-a"><a href="#ref-15" class="citation-link">15</a></sup>. By selling physical TPU systems directly to customers, Google can tap into that high-margin hardware revenue stream.</p>
+<h2>Google's built-in advantages</h2>
+<p>Google enters the field with substantial advantages. It brings battle-tested scale, enterprise distribution, and cost flexibility.</p>
+<p>First, its silicon is already proven at immense scale. Google trains its Gemini models entirely on TPUs, and Anthropic officially uses Google Cloud TPUs to train and deploy its models<sup id="cite-5-b"><a href="#ref-5" class="citation-link">5</a></sup>. Meta has also reportedly held talks to rent TPU capacity and eventually deploy TPUs in its own data centers<sup id="cite-16-a"><a href="#ref-16" class="citation-link">16</a></sup>. Few chips outside Nvidia's lineup can claim this level of frontier adoption.</p>
+<p>This widespread adoption across frontier labs means much more than just a proof of reliability. Running cutting-edge workloads directly drives the hardware's evolution. As frontier architectures push against memory bandwidth, latency, and interconnect limits, chip design iterates hand-in-hand with model development. Google does not build silicon in a vacuum and hope algorithms adapt to it. Instead, TPUs have evolved through years of tight co-design with the demands of state-of-the-art models.</p>
+<p>This tight feedback loop is critical in modern AI. It is a key reason why Nvidia builds in-house models like Nemotron<sup id="cite-17-a"><a href="#ref-17" class="citation-link">17</a></sup> to ensure its architecture teams have a proprietary co-design loop to optimize future GPUs.</p>
+<p>Second, Google has a built-in distribution channel. Unlike a pure hardware startup trying to sign its first customers, Google can seamlessly tap into its massive base of existing enterprise cloud accounts. Google already manages the billing, relationships, and deployment tooling for thousands of organizations, giving it direct access to buyers who already run core workloads within the Google ecosystem.</p>
+<p>Third, Google benefits from absorbed R&amp;D costs and exceptional pricing flexibility. The company does not need to load the heavy historical development costs of TPUs onto external customers. Because Google has operated and scaled the TPU program for internal workloads over a full decade without selling a single data center chip, the foundational engineering has already been amortized by Google's core revenue engines, including Search, Ads, YouTube, and Gemini. As long as the selling price exceeds the marginal cost of manufacturing the hardware, Google can price aggressively while still generating attractive margins and positive cash flow, though every chip sold externally is one fewer chip for its own workloads.</p>
+<h2>The broader technical impact</h2>
+<p>Whether or not community influence was Google's primary motive, putting physical TPUs into customer data centers carries massive technical implications for the open-source ecosystem.</p>
+<p>Hardware vendors care intensely about how well open-weight models run on their silicon. A major segment of hardware buyers purchases compute specifically to run inference on these models. Buyers naturally gravitate toward whichever architecture runs open models the fastest and cheapest to keep operational costs low. For hardware makers, championing open-weight ecosystems directly fuels silicon sales. Nvidia's acquisition of HuggingFace<sup id="cite-18-a"><a href="#ref-18" class="citation-link">18</a></sup> and an open letter it backed advocating for open-weight models<sup id="cite-19-a"><a href="#ref-19" class="citation-link">19</a></sup> reflect these commercial incentives.</p>
+<p>Crucially, modern open-source models tend to overfit the hardware they are developed on. Inference optimization does not only happen after training finishes. Model builders also tailor the neural network architecture for hardware efficiency from the very start, choosing layer shapes and dimensions before training ever begins. Because inference serving costs dictate whether developers and enterprises can afford to deploy a model at scale, optimizing for the target hardware from the beginning gives a model a major head start in efficiency and adoption.</p>
+<p>For example, Nvidia designed Nemotron-4 340B<sup id="cite-17-b"><a href="#ref-17" class="citation-link">17</a></sup> with an attention head dimension of 192. During attention computation, this results in matrix multiplications involving a key dimension of 192. Nvidia Tensor Cores process these operations by tiling matrices into small sub-blocks of 16 by 16 or 64 by 64. Because 192 is an exact multiple of these tile sizes (three 64-wide blocks), the dimension maps cleanly onto the GPU's tile sizes without padding.</p>
+<p>In contrast, the Matrix Multiply Units (MXUs) on TPU v5 and earlier execute operations using fixed 128 by 128 systolic arrays<sup id="cite-20-a"><a href="#ref-20" class="citation-link">20</a></sup>. When tiling a dimension of 192, the TPU fills one full 128-wide tile, leaving a remaining tile of 64. The compiler must pad that remaining 64 with zeros to complete the 128-wide array, running the hardware unit at only half capacity for that chunk.</p>
+<p>This zero-padding wastes a quarter of the MXU's work on every attention matmul that runs over the head dimension, lowering the goodput of the TPU. As a result, Nemotron-4 runs less efficiently out of the box on TPUs, and closing the gap with Nvidia GPUs takes extra engineering effort.</p>
+<p>This tiling mismatch is only one example of how modern architectures overfit Nvidia hardware. Across the industry, model dimensions are often chosen with Nvidia GPU Tensor Core utilization in mind, while novel mathematical operations are frequently abandoned if they cannot be fused into efficient CUDA kernels. Much of the open-source tooling, from GPU-centric kernel languages like Triton<sup id="cite-21-a"><a href="#ref-21" class="citation-link">21</a></sup> to low-precision formats like Nvidia's NVFP4 on Blackwell<sup id="cite-22-a"><a href="#ref-22" class="citation-link">22</a></sup>, is built first and foremost to extract maximum performance from GPUs.</p>
+<p>This creates a powerful flywheel for the ecosystem moat Google wants to build. When open models are developed on TPUs, they run faster on Google silicon out of the box. Buyers choose TPUs to run those models at the lowest cost, driving hardware adoption. More TPUs in the wild in turn motivate developers to build on Google silicon, locking in a self-reinforcing advantage.</p>
+<p>Currently, that same flywheel works against Google because popular open models are already tailored for Nvidia GPUs. To kickstart its own flywheel, Google must take the initiative to bridge this gap, optimizing leading open models for TPUs and demonstrating that they run just as fast and cost-effectively on its hardware.</p>
+<h2>The challenges ahead</h2>
+<p>Selling hardware directly to customers brings two major challenges Google has never had to navigate at this scale.</p>
+<p>The first is balancing internal compute needs against hardware sales. Google DeepMind requires massive TPU capacity to train and serve Gemini models. Because chip supply and packaging capacity are limited, Google must carefully balance how many chips it sells to customers against the compute it keeps for itself, ensuring near-term hardware revenue does not slow down its own model development.</p>
+<p>The second challenge is customer trust. Pure-play foundries like TSMC succeeded in chip manufacturing because they promised never to compete with their customers in chip design. Google, on the other hand, builds both the hardware and the frontier models that directly compete with its buyers. To win over enterprise buyers, Google must earn their long-term trust, proving it will reliably supply the latest silicon in sufficient volume rather than hoarding its best chips to gain a competitive advantage over its customers.</p>
+<h2>Summary</h2>
+<p>Google's decision to finally sell physical TPUs comes down mostly to money. Building out AI infrastructure costs a fortune, and surging capital spending just pushed Google's free cash flow into negative territory. Selling expensive AI chips directly to customers brings in fast, high-margin revenue to help foot the bill.</p>
+<p>Google is in a great spot to do this. Its chips already help power frontier models like Gemini and Claude, its enterprise sales network is already up and running, and its R&amp;D costs have long been paid for by products like Google Search and YouTube.</p>
+<p>Yet succeeding as a merchant hardware vendor will test Google in new ways. It must balance selling chips externally against preserving enough compute for its own Gemini models, while proving to customer-competitors that it will be a reliable, trustworthy partner rather than a rival hoarding the best hardware for itself.</p>
+<p>For the rest of the AI world, this could shake things up. The open-source community has been stuck on Nvidia GPUs for years because today's models are built around them. If Google puts the work in to make popular open models run smoothly on TPUs, it can kickstart a flywheel that gives developers more choices and real competition in AI hardware.</p>
+<h2>References</h2>
+<ol class="reference-list"><li id="ref-1"><div class="csl-bib-body">
+  <div data-csl-entry-id="tpu-announcement" class="csl-entry">Jouppi, N. (2016). <i>Google supercharges machine learning tasks with custom chip</i>. Google Cloud Blog. <a href="https://cloud.google.com/blog/products/ai-machine-learning/google-supercharges-machine-learning-tasks-with-custom-chip" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-1-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-2"><div class="csl-bib-body">
+  <div data-csl-entry-id="tpu-v1-paper" class="csl-entry">Jouppi, N. P., &#38; others. (2017). In-datacenter performance analysis of a tensor processing unit. <i>ISCA</i>. <a href="https://arxiv.org/abs/1704.04760" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-2-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-3"><div class="csl-bib-body">
+  <div data-csl-entry-id="google-tpu-oracle" class="csl-entry">Google Cloud. (2026). <i>Bringing Google TPUs to Oracle Cloud Infrastructure</i>. Google Cloud Blog. <a href="https://cloud.google.com/blog/products/infrastructure/bringing-google-tpus-to-oracle-cloud-infrastructure" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-3-a" class="reference-back-link">↩</a> <a href="#cite-3-b" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-4"><div class="csl-bib-body">
+  <div data-csl-entry-id="alphabet-tpu-sales" class="csl-entry">Alphabet Inc. (2026). <i>Alphabet Q2 2026 Earnings Conference Call</i>. Alphabet Investor Relations. <a href="https://abc.xyz/investor/events/event-details/2026/2026-Q2-Earnings-Call-2026-GgTAq7Is0z/default.aspx" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-4-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-5"><div class="csl-bib-body">
+  <div data-csl-entry-id="anthropic-tpu" class="csl-entry">Anthropic. (2023). <i>Anthropic partners with Google Cloud</i>. Anthropic News. <a href="https://www.anthropic.com/news/anthropic-partners-with-google-cloud" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-5-a" class="reference-back-link">↩</a> <a href="#cite-5-b" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-6"><div class="csl-bib-body">
+  <div data-csl-entry-id="semianalysis-tpuv7" class="csl-entry">Patel, D., &#38; others. (2025). <i>TPUv7: Google Takes a Swing at the King</i>. SemiAnalysis. <a href="https://newsletter.semianalysis.com/p/tpuv7-google-takes-a-swing-at-the" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-6-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-7"><div class="csl-bib-body">
+  <div data-csl-entry-id="artificial-analysis" class="csl-entry">Artificial Analysis, Inc. <i>Artificial Analysis Intelligence Index</i>. <a href="https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-7-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-8"><div class="csl-bib-body">
+  <div data-csl-entry-id="gemini-3-pro-model-card" class="csl-entry">Google DeepMind. (2025). <i>Gemini 3 Pro Model Card</i>. Google DeepMind. <a href="https://storage.googleapis.com/deepmind-media/Model-Cards/Gemini-3-Pro-Model-Card.pdf" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-8-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-9"><div class="csl-bib-body">
+  <div data-csl-entry-id="gemini-4-argon" class="csl-entry">Google DeepMind. (2026). <i>Gemini 4 Argon: Frontier reasoning and agentic intelligence</i>. Google Blog. <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-4-argon/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-9-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-10"><div class="csl-bib-body">
+  <div data-csl-entry-id="reuters-ai-capex" class="csl-entry">Murugaboopathy, P., &#38; Dogra, G. (2026). <i>AI investment boom puts Big Tech's free cash flow under pressure</i>. Reuters. <a href="https://www.reuters.com/technology/ai-investment-boom-puts-big-techs-free-cash-flow-under-pressure-2026-07-22/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-10-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-11"><div class="csl-bib-body">
+  <div data-csl-entry-id="semianalysis-tokenomics" class="csl-entry">Patel, D., &#38; others. (2025). <i>AI Tokenomics: Supply, Demand, and the Economics of Compute</i>. SemiAnalysis. <a href="https://semianalysis.com/tokenomics-model/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-11-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-12"><div class="csl-bib-body">
+  <div data-csl-entry-id="alphabet-q2-2026-results" class="csl-entry">Alphabet Inc. (2026). <i>Alphabet Announces Second Quarter 2026 Results</i>. Alphabet Investor Relations. <a href="https://abc.xyz/investor/news/news-details/2026/Alphabet-Announces-Second-Quarter-2026-Results-2026-Y3uQ6H4ZJa/default.aspx" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-12-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-13"><div class="csl-bib-body">
+  <div data-csl-entry-id="openrouter" class="csl-entry">OpenRouter. <i>OpenRouter: A unified interface for LLMs</i>. <a href="https://openrouter.ai/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-13-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-14"><div class="csl-bib-body">
+  <div data-csl-entry-id="deepseek-payback" class="csl-entry">Liang, W. (2026). <i>DeepSeek Investor Meeting: API Pricing and Hardware Economics</i>. HK01. <a href="https://www.hk01.com/article/60372909" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-14-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-15"><div class="csl-bib-body">
+  <div data-csl-entry-id="patel-payback" class="csl-entry">Patel, D., &#38; others. (2024). <i>The Great GPU Shortage: Rental Capacity and AI Infrastructure Economics</i>. SemiAnalysis. <a href="https://newsletter.semianalysis.com/p/the-great-gpu-shortage-rental-capacity" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-15-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-16"><div class="csl-bib-body">
+  <div data-csl-entry-id="meta-tpu-talks" class="csl-entry">Reuters. (2025). <i>Meta in talks to spend billions on Google's chips, The Information reports</i>. Reuters. <a href="https://www.reuters.com/business/meta-talks-spend-billions-googles-chips-information-reports-2025-11-25/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-16-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-17"><div class="csl-bib-body">
+  <div data-csl-entry-id="nemotron-4" class="csl-entry">NVIDIA. (2024). <i>Nemotron-4 340B Technical Report</i>. arXiv Preprint arXiv:2406.11704. <a href="https://arxiv.org/abs/2406.11704" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-17-a" class="reference-back-link">↩</a> <a href="#cite-17-b" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-18"><div class="csl-bib-body">
+  <div data-csl-entry-id="nvidia-huggingface" class="csl-entry">Nvidia. (2026). <i>NVIDIA to acquire Hugging Face to advance open source AI development</i>. NVIDIA Blog. <a href="https://blogs.nvidia.com/blog/nvidia-to-acquire-hugging-face/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-18-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-19"><div class="csl-bib-body">
+  <div data-csl-entry-id="open-weights-letter" class="csl-entry">Open Weights Coalition. (2026). <i>Open weights and American AI leadership</i>. Open Letter. <a href="https://images.nvidia.com/pdf/Open-Weights-and-American-AI-Leadership.pdf" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-19-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-20"><div class="csl-bib-body">
+  <div data-csl-entry-id="tpu-performance-guide" class="csl-entry">Google Cloud. <i>Cloud TPU performance guide</i>. Google Cloud Documentation. <a href="https://cloud.google.com/tpu/docs/performance-guide" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-20-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-21"><div class="csl-bib-body">
+  <div data-csl-entry-id="triton-paper" class="csl-entry">Tillet, P., Kung, H. T., &#38; Cox, D. (2019). Triton: An intermediate language and compiler for tiled neural network computations. <i>ACM SIGPLAN MAPL</i>. <a href="https://doi.org/10.1145/3315508.3329973" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-21-a" class="reference-back-link">↩</a></div>
+</div></li><li id="ref-22"><div class="csl-bib-body">
+  <div data-csl-entry-id="nvfp4-paper" class="csl-entry">NVIDIA. (2025). <i>Pretraining Large Language Models with NVFP4</i>. arXiv Preprint arXiv:2509.25149. <a href="https://arxiv.org/abs/2509.25149" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-22-a" class="reference-back-link">↩</a></div>
+</div></li></ol>
+
+        <div style="text-align: center; margin: 2em; display: flex; justify-content: center; align-items: center;">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" style="background: none; border: none; cursor: pointer; padding: 0; color: var(--dark-gray-text-color); display: flex;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                </svg>
+            </button>
+        </div>
+
+        </article>
+
+        <footer>
+            <div class="footer-content">
+                &copy; 2022–<span id="year"></span> Haifeng Jin.<br>All rights reserved.<br>
+                <a href="/about">About</a> &bull; <a href="/privacy-policy">Privacy Policy</a> &bull; <a href="/feed.xml">RSS</a>
+            </div>
+        </footer>
+        <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
+    </div>
+    <script src="/assets/js/theme.js"></script>
+</body>
+</html>
