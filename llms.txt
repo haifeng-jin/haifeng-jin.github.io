@@ -1,0 +1,20 @@
+# Haifeng Jin
+
+> A personal blog by Haifeng Jin covering machine learning, software engineering, and open source.
+
+For the full content of all posts in a single Markdown file, see [llms-full.txt](https://haifengjin.com/llms-full.txt).
+
+## Posts
+
+- [TPUs Are Finally for Sale, But Why?](https://haifengjin.com/tpus-are-finally-for-sale-but-why/): An analysis of Google's entry into the AI chip market
+- [The Anatomy of an LLM](https://haifengjin.com/the-anatomy-of-an-llm/): Every tensor operation explained with code and diagrams
+- [Intelligence Goodput](https://haifengjin.com/intelligence-goodput/): A metric to measure the speed of intelligence
+- [Intelligence Bandwidth](https://haifengjin.com/intelligence-bandwidth/): A metric to track the exponential growth of AI
+- [Build an ML Framework from Scratch](https://haifengjin.com/build-an-ml-framework-from-scratch/): An introduction to the basics of ML frameworks
+- [Llama Is Open-Source, But Why?](https://haifengjin.com/llama-is-open-source-but-why/): An analysis of Meta's open-source large model strategy
+- [TPUs Are Not for Sale, But Why?](https://haifengjin.com/tpus-are-not-for-sale-but-why/): An analysis of Google's unique approach to AI hardware
+- [Design an Easy-to-Use Deep Learning Framework](https://haifengjin.com/design-an-easy-to-use-deep-learning-framework/): The design principles I learned as an open-source contributor
+- [The AutoML Dilemma](https://haifengjin.com/the-automl-dilemma/): An infrastructure engineer's perspective
+- [Don't Drive Your Contributors Away](https://haifengjin.com/don-t-drive-your-contributors-away/): The essentials of a contributor-friendly open-source project
+- [Towards Auto-Generated Models](https://haifengjin.com/towards-auto-generated-models/): A brief history of neural architecture search and beyond
+- [TensorFlow Is Open-Source, But Why?](https://haifengjin.com/tensorflow-is-open-source-but-why/): A peek into Google's open-source strategy

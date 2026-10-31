@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>if (window.location.hostname.endsWith('haifengjin.com')) {(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-57PK4DJ8');}</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Applies the saved/preferred theme before first paint, so the page
+         never paints dark-then-corrects-to-light. Must run before the
+         stylesheets so the right CSS variables are already in play. -->
+    <script>
+        (function () {
+            var mode = localStorage.getItem('theme') || 'system';
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <title>Don't Drive Your Contributors Away</title>
+    <link rel="stylesheet" href="/assets/css/code-theme.css?v=2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=2">
+    <link rel="stylesheet" href="/assets/css/references.css?v=2">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="Haifeng Jin" href="/feed.xml">
+    <link rel="canonical" href="https://haifengjin.com/don-t-drive-your-contributors-away/">
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: ['base', 'ams']
+            },
+            svg: {
+                fontCache: 'none'
+            }
+        };
+    </script>
+    <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+<body>
+    
+    <a class="corner-left no-print" href="/" aria-label="Back to home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+    
+    <!-- Theme toggle: cycles Light -> Dark -> System on click (theme.js) -->
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    <div class="margin">
+
+
+        <article class="content-container">
+
+            
+        <h1 class="title no-print">Don't Drive Your Contributors Away</h1>
+        <h1 class="title-print print-only">
+            Don't Drive Your Contributors Away
+        </h1>
+        <div class="subtitle">The essentials of a contributor-friendly open-source project</div>
+        <p class="print-only author-print">Haifeng Jin, January 2023</p>
+        <div class="date no-print">by <a href="/about" style="text-decoration: none;">Haifeng Jin</a>, January 2023</div>
+
+        <p>You have an amazing open-source project with a good number of users. Many of them are trying to contribute code to help you improve your project. However, they soon give up because your project's setup is not welcoming. Don't let this happen to your project!</p>
+<p>In this article, I will introduce you to the essential setups that lead to a perfect open-source contributing experience.</p>
+<h3>Why Do I Want People to Contribute?</h3>
+<p>Open-source contributions lead to product excellence. There are tons of small improvements you can make to your software, and you cannot do everything on your own. Open-source contributors may help you fix bugs and create new features. They have the incentive to do this since they will have a better experience using your software.</p>
+<p>Moreover, a strong community gains trust in the product. Even a small contribution, your responsiveness gives them confidence in your product because they see it is evolving and the issue can potentially be resolved in the future.</p>
+<p>Based on this trust, they may build new things upon your software. An entirely new ecosystem may be built up this way, leading to your software's real prosperity.</p>
+<h3>The Million-Dollar Metric</h3>
+<p>I estimate the engineering resources we are willing to spend to optimize this metric would be worth one million dollars. This metric is like Polaris pointing us in the right direction in improving the contributing experience, which is: the average life span of the pull requests.</p>
+<p>The metric is pretty intuitive. The faster your pull request gets merged, the better the experience is. The focus of the developers is always on the intellectual parts during the pull request. Let's compare a good and a bad contributing experience, and see if the metric works or not.</p>
+<p><strong>What does a bad contributing experience look like?</strong> The author made some changes that don't follow the code style or break a bunch of unit tests. The owner spent several rounds of code review just to get these basic things right.</p>
+<p><strong>What does a good contributing experience look like?</strong> Everything just works. It is very easy for the contributor to set up the development environment to run the unit tests and code style checks. When creating the pull request, the continuous integration (CI) did not take too long to finish. Therefore, when the contributor requests for review. Everyone can focus on the important things instead of the minutiae.</p>
+<p>The proposed metric can differentiate the two scenarios. The bad experience's pull request took much longer than the good experience's pull request because of the extra rounds of code reviews.</p>
+<p>Another important observation we can draw from above is that as long as you do the setups and have clear guidance, the contributing experience should be good.</p>
+<p><strong>How do you do the right setups for your project?</strong> Following is a checklist of all the things you need to optimize for this metric. Just by doing all the things on the checklist, your project's contributing experience would be good enough.</p>
+<h3>Development Environment Setup</h3>
+<p>Most of the contributors are one-time contributors. It is not worth it to spend a lot of time in setting up a development environment. To optimize the contributing experience for these users, you have to make the process of setting up your development environment simple enough.</p>
+<p>Our trick is to support <a href="https://github.com/features/codespaces">GitHub Codespaces</a>, which provides a web-based <a href="https://code.visualstudio.com">Visual Studio Code</a> IDE. The best thing is you can specify a Dockerfile with all the required dependency software installed. With one click on the repo's webpage, your contributors are ready to code. Here is <a href="https://github.com/keras-team/keras/tree/master/.devcontainer">our setup</a> for your reference.</p>
+<p>For those who are willing to spend time customizing their development environment, we also provide very clear instructions on how to set up the environment locally.</p>
+<h3>Running the Tests</h3>
+<p>There are two ways that a contributor would like to run the tests. Run a specific test or run all the tests.</p>
+<p>When contributing code the contributor would usually need to write some unit tests. They would want to easily run a specific test many times during their development to debug their code.</p>
+<p>Before creating the pull request, some contributors would also like to run all the tests locally to make sure everything works in their pull request. The running settings should be as similar to the CI run as possible since the goal is just to pre-testing the CI.</p>
+<p>Therefore, it is really important to support these two cases of running tests well. Clear and detailed instructions should be provided for running a specific test and for running all the tests.</p>
+<h3>Continuous integration (CI) Time</h3>
+<p>Ideally, the CI should finish in minutes or at most a couple of hours. The sooner the contributors get the CI results the sooner they can start working on it again if failed. Imagine if your CI takes days to finish, the contributors may already have forgotten what the pull request was about when they received the results.</p>
+<p>The first way to shorten your CI is to make your tests run faster. For example, you can try to run the tests in parallel, or just rewrite some of your slowest test cases to run faster.</p>
+<p>Another way to shorten your CI is to run less number of tests by splitting the repo into multiple ones, which is exactly what we are doing with TensorFlow. The CI usually takes longer for larger projects, because compiling a large codebase takes longer and there are more tests to run. Therefore, you may consider splitting your repo into multiple ones if the code can be decoupled.</p>
+<p>This is where we spent our resources to optimize the metric we mentioned above. In 2021, we have successfully finished the split of Keras and TensorFlow on GitHub. It is non-trivial work as you can imagine. It involves a lot of code decoupling and refactoring. After that, CI takes less than 20 minutes to run, which is much shorter compared with before.</p>
+<h3>Code Style Check</h3>
+<p>The code style check is important for a project to ensure its code quality. If your code follows certain style guidelines, it is important to make it clear to the contributors.</p>
+<p>The worst case is like this. The contributors do not know how to run the automated code style check. The only way they can do it is through the code review. The code reviewer catches the code style issues and reported back to the contributor. It takes several rounds of code reviews just to get the code style right, which is extremely inefficient.</p>
+<p>The code style checks should be automated whenever possible. In the CI, we use tools like <a href="https://flake8.pycqa.org/en/latest/">Flake8</a> to catch style violations. We also use <a href="https://black.readthedocs.io/en/stable/index.html">Black</a>, a code auto-formatter, to format the code. The contributor can just use the auto-formatter instead of fixing all the style issues by themselves.</p>
+<p>For the parts of the code that is hard to auto-format, like the Python docstrings, a clear style guide should be provided. The contributors can easily follow the guide to avoid leaving the issues to the code reviews.</p>
+<p>Besides the above, we took it one step further for Keras. We integrated the code style checks into the GitHub Codespaces, which marks all the style violations in the editor and autoformats the code on save.</p>
+<h3>The Contributing Guide</h3>
+<p>Finally, everything a contributor should know should be summarized into a contributing guide, including almost everything we mentioned above and more.</p>
+<p>It should first be clear about what types of contributions are welcome. Refer to a list of contribution-welcome issues if you have one. You may also mention the special cases. For example, any change to the APIs would need to go through the <a href="https://www.tensorflow.org/community/contribute/rfc_process">Request for Comments (RFC)</a> process first.</p>
+<p>Then, it should describe the general process of contributing code, for example, creating a fork of the repo, creating a pull request, waiting for the CI to pass, and so on.</p>
+<p>It should include clear instructions for each of the aspects we discussed above, including how to set up the environment, how to run the tests, and how to check your code style.</p>
+<p>Here is <a href="https://github.com/keras-team/keras/blob/master/CONTRIBUTING.md">our contributing guide</a> as an example.</p>
+<h3>Conclusion</h3>
+<p>In this article, we first introduced the importance of having open-source contributions for your software. You need open-source contributions to reach prosperity.</p>
+<p>Then, we introduced the million-dollar metric for improving your open-source software contributing experience, which is the average life span of the pull requests. The faster it gets merged the better the contributing experience is. You only need to do the project setups right to optimize for the metric.</p>
+<p>Finally, a list of actionable items is provided to optimize the metric.</p>
+<p>Hope this article could help improve your open-source software and attract more contributors!</p>
+
+        <div style="text-align: center; margin: 2em; display: flex; justify-content: center; align-items: center;">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" style="background: none; border: none; cursor: pointer; padding: 0; color: var(--dark-gray-text-color); display: flex;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                </svg>
+            </button>
+        </div>
+
+        </article>
+
+        <footer>
+            <div class="footer-content">
+                &copy; 2022–<span id="year"></span> Haifeng Jin.<br>All rights reserved.<br>
+                <a href="/about">About</a> &bull; <a href="/privacy-policy">Privacy Policy</a> &bull; <a href="/feed.xml">RSS</a>
+            </div>
+        </footer>
+        <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
+    </div>
+    <script src="/assets/js/theme.js"></script>
+</body>
+</html>

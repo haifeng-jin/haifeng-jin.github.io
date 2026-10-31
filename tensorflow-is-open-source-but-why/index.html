@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>if (window.location.hostname.endsWith('haifengjin.com')) {(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-57PK4DJ8');}</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Applies the saved/preferred theme before first paint, so the page
+         never paints dark-then-corrects-to-light. Must run before the
+         stylesheets so the right CSS variables are already in play. -->
+    <script>
+        (function () {
+            var mode = localStorage.getItem('theme') || 'system';
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <title>TensorFlow Is Open-Source, But Why?</title>
+    <link rel="stylesheet" href="/assets/css/code-theme.css?v=2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=2">
+    <link rel="stylesheet" href="/assets/css/references.css?v=2">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="Haifeng Jin" href="/feed.xml">
+    <link rel="canonical" href="https://haifengjin.com/tensorflow-is-open-source-but-why/">
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: ['base', 'ams']
+            },
+            svg: {
+                fontCache: 'none'
+            }
+        };
+    </script>
+    <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+<body>
+    
+    <a class="corner-left no-print" href="/" aria-label="Back to home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+    
+    <!-- Theme toggle: cycles Light -> Dark -> System on click (theme.js) -->
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    <div class="margin">
+
+
+        <article class="content-container">
+
+            
+        <h1 class="title no-print">TensorFlow <br> Is Open-Source, <br> But Why?</h1>
+        <h1 class="title-print print-only">
+            TensorFlow Is Open-Source, But Why?
+        </h1>
+        <div class="subtitle">A peek into Google's open-source strategy</div>
+        <p class="print-only author-print">Haifeng Jin, November 2022</p>
+        <div class="date no-print">by <a href="/about" style="text-decoration: none;">Haifeng Jin</a>, November 2022</div>
+
+        <p>The reason behind the open-source of TensorFlow may be quite different from what you think. At least, it is quite different from many popular open-source projects today.</p>
+<p>This article summarizes my analysis of the reasons behind the open source of TensorFlow.</p>
+<p>DISCLAIMER: The article represents the writer's personal opinion and in no way reflects the opinions and/or ideas of Google or its partners. The entirety of the information presented within this article is sourced exclusively from publicly available materials.</p>
+<h2>A popular business model of open-source software</h2>
+<p>The most popular business model for running open-source software is the “free code, paid service” model. They use the open-source code to attract more users, but there is always a paid service based on the code down the road somewhere to earn the money back from the users. Let us see two examples.</p>
+<p>The first example is a big open-source software, Android. Android is open-source so all smartphone manufacturers want to use this operating system instead of developing their own. Therefore, whatever brand of smartphone you buy, you are going to use the Android operating system. A large number of users are connected to their ecosystem. If any of these users ever purchase an app, android will get its share.</p>
+<p>The second example is reveal.js from a small startup company. It is a JavaScript library for making slides. You need to write JavaScript code to use it. It is open-source and free to use. They also host a premium service on slides.com, which is a web graphical user interface based on the open-source library. Again, the open-source library is to make technical impacts and attract users, and the premium service is to make profits from some of the attracted users.</p>
+<h2>A similar conspiracy theory around TensorFlow</h2>
+<p>Similarly, we can expect that TensorFlow is trying to board more people on the platform and get profit from them somewhere down the road. The most widely spread theory is that Google open-sourced TensorFlow to connect users to their cloud services.</p>
+<p>It makes perfect sense. TensorFlow is there to make a technical impact and attract users, and the Google Cloud Platform (GCP) would be the best premium service for using TensorFlow. Especially, the TPUs, which pushed TensorFlow's performance to the next level, are exclusive to the GCP.</p>
+<h2>If this is true …</h2>
+<p>If this theory is true, the slide from using open-source TensorFlow to premium TensorFlow services should be buttery smooth. This is because they want to push the conversion rate from free users to paid users as high as possible. We should at least see the following things happening.</p>
+<p><strong>First, TPUs should be promoted in the TensorFlow documentation.</strong> Promoting TPUs can direct users to GCP, where the TPUs live. However, the TPU instructions are hidden <a href="https://www.tensorflow.org/guide/tpu">quite deep on the website</a>. If you land on <a href="https://www.tensorflow.org/">the index page</a> of the website, it is hard to find anything related to TPU unless you use the search bar.</p>
+<p><strong>Second, TensorFlow services on GCP should be super easy to use.</strong> However, on the <a href="https://cloud.google.com/products/ai/">AI &amp; ML page</a> of the GCP website, there is only one dedicated product for TensorFlow, which is the <a href="https://cloud.google.com/tensorflow-enterprise">TensorFlow Enterprise</a>. None of the rest of the products even mention TensorFlow as a promotion.</p>
+<p><strong>Third, Google Colab users should be able to pay more for premium services.</strong> Google Colab is the most popular TensorFlow service hosted by Google. Many data scientists and machine learning practitioners use it as their “TensorFlow IDE”. Google Cloud can easily make a profit by providing premium GPU and TPU services in Google Colab. However, Google Colab has extremely strict <a href="https://research.google.com/colaboratory/faq.html#resource-limits">computing resource limits</a> and there is no way to pay more to get more. You are only allowed to use <a href="https://stackoverflow.com/a/58032694/7910419">a single GPU or TPU</a>. Even if you are on the <a href="https://colab.research.google.com/signup/pricing">Colab Pro+</a>, which is the top tier, your environment may still be preempted after running for 24 hours.</p>
+<h2>Why Google did not follow this path</h2>
+<p>There are always such conspiracy theories about giant companies. There is a big brother, who oversees everything and makes all the decisions. However, in reality, it is largely not true. Google is one of the world's biggest companies. We cannot think of it as a small company, where all teams work towards a single clear goal pointed out by the upper management.</p>
+<p>Each division at Google makes its own OKRs. As a big tech company, Google has always been living in the fear of being broken up into pieces by antitrust lawsuits<sup id="cite-1-a"><a href="#ref-1" class="citation-link">1</a></sup>. In preparation for the apocalypse, Google let every division make its OKRs, a side effect of which is that the divisions are harder to have deep strategic cooperation as they have to prioritize their own OKRs.</p>
+<p>TensorFlow and GCP belong to different divisions at Google. TensorFlow was a tool first developed for internal research and machine learning applications at Google, which is more like an internal infrastructure software. However, cloud services are aiming at driving external revenue. Therefore, they have their own top priority goals to care of. Thus, may not have deep collaborations with each other.</p>
+<h2>Why was it initially open-sourced?</h2>
+<p>We first need to understand how big companies make small decisions. Most small decisions are made bottom-up instead of top-down. The management operates in the background and the great ideas come from engineers, who do the actual work. I believe the decision to open-source TensorFlow is not big enough to have all the upper management coordinate the teams across multiple divisions at Google to plan a long-term monetization strategy for it.</p>
+<p>It could be a simple decision just because engineers and researchers prefer open source. The engineers, who developed TensorFlow, prefer open source for better exposure to their work. The researchers, who used TensorFlow in their research, also prefer open source to share their experimental code for credibility.</p>
+<p>The management at Google will approve the open source request since it aligns with Google's interest. First, it would not help their competitors beat Google. Second, it would strengthen Google's world-leading role in technology. Third, open source drives product excellence as a world of developers contributing ideas and code to it. Fourth, Building an open-source community also reaches and locks more users. Fifth, they may make a profit from these users in the future, who knows?</p>
+<h2>Why keep devoting resources to open source?</h2>
+<p>The previous answer may be boring. However, the real interesting question here is: Why does Google keep devoting more resources to building the open-source community for TensorFlow?</p>
+<p>Up to now, you should see that TensorFlow does not have a clear business model to make a profit. However, Google is pretty happy to spend a lot of resources just to make TensorFlow a more successful open-source project. They host online and offline events about TensorFlow. Keep renovating TensorFlow official documentation. Spend engineering power on modularizing TensorFlow, like splitting Keras and XLA out of the TensorFlow repo just for easier community contributions. Why is Google throwing so much money away just to power something that is not critical?</p>
+<p>The answer is simple. <strong>It is critical actually.</strong> To see why it is critical, we need to approach the problem from another perspective. Let's try to answer another similar question: If they do not care about the open-source community, what would happen?</p>
+<h2>If Google does not commit resources…</h2>
+<p>If Google only keeps releasing the code updates but does nothing to build its open-source community, such as maintaining the documentation, publishing tutorials, and calling for code contributions, here is what is going to happen. First, TensorFlow would lose a significant amount of users. Second, TensorFlow will become less useful to developers outside of Google. Google would only care about internal needs instead of the rest of the world. Third, TensorFlow will become harder to use even internally without support from the open-source community.</p>
+<p>If it goes down this path, no one outside of Google will use TensorFlow. People in the tech world are constantly jumping around between companies. This trend will eventually penetrate Google. Even Google engineers do not want to use TensorFlow. Then, another request would be submitted to the upper management to replace TensorFlow with the most successful third-party deep learning framework at the time. The management will approve it since TensorFlow is not easy to use anyway.</p>
+<p>Finally, Google lost control of an important piece of infrastructure software that powers everything related to machine learning at Google, which will damage the quality of many Google services. Moreover, Google needs to spend much more money on migrating its services to the new framework. It costs hundreds of times more than building an open-source community for TensorFlow.</p>
+<h2>Conclusions</h2>
+<p>Google did not have a business plan when TensorFlow was first open-sourced. It was rather a bottom-up decision from the engineers for self-interest instead of a top-down one. Google keeps investing more resources into TensorFlow to build a successful open-source community for the open-source's own sake instead of aiming for a profit. It is just because the cost of losing the battle of open-source deep learning frameworks is too high.</p>
+<p>Therefore, in the foreseeable future, if you are building your deep learning infrastructure, TensorFlow is a trustworthy platform to build upon.</p>
+<h2>References</h2>
+<ol class="reference-list"><li id="ref-1"><div class="csl-bib-body">
+  <div data-csl-entry-id="antitrust-cnet" class="csl-entry">CNET. (2020). <i>Google’s three antitrust battles: Here’s what you need to know</i>. CNET. <a href="https://www.cnet.com/tech/tech-industry/googles-three-antitrust-battles-heres-what-you-need-to-know-faq/" target="_blank" rel="noopener noreferrer" class="reference-url">&#x2197;</a> <a href="#cite-1-a" class="reference-back-link">↩</a></div>
+</div></li></ol>
+
+        <div style="text-align: center; margin: 2em; display: flex; justify-content: center; align-items: center;">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" style="background: none; border: none; cursor: pointer; padding: 0; color: var(--dark-gray-text-color); display: flex;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                </svg>
+            </button>
+        </div>
+
+        </article>
+
+        <footer>
+            <div class="footer-content">
+                &copy; 2022–<span id="year"></span> Haifeng Jin.<br>All rights reserved.<br>
+                <a href="/about">About</a> &bull; <a href="/privacy-policy">Privacy Policy</a> &bull; <a href="/feed.xml">RSS</a>
+            </div>
+        </footer>
+        <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
+    </div>
+    <script src="/assets/js/theme.js"></script>
+</body>
+</html>

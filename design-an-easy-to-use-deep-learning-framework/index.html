@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>if (window.location.hostname.endsWith('haifengjin.com')) {(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-57PK4DJ8');}</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Applies the saved/preferred theme before first paint, so the page
+         never paints dark-then-corrects-to-light. Must run before the
+         stylesheets so the right CSS variables are already in play. -->
+    <script>
+        (function () {
+            var mode = localStorage.getItem('theme') || 'system';
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var theme = mode === 'system' ? (prefersDark ? 'dark' : 'light') : mode;
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
+    <title>Design an Easy-to-Use Deep Learning Framework</title>
+    <link rel="stylesheet" href="/assets/css/code-theme.css?v=2">
+    <link rel="stylesheet" href="/assets/css/style.css?v=2">
+    <link rel="stylesheet" href="/assets/css/references.css?v=2">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="alternate" type="application/atom+xml" title="Haifeng Jin" href="/feed.xml">
+    <link rel="canonical" href="https://haifengjin.com/design-an-easy-to-use-deep-learning-framework/">
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                packages: ['base', 'ams']
+            },
+            svg: {
+                fontCache: 'none'
+            }
+        };
+    </script>
+    <script id="MathJax-script" defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+</head>
+<body>
+    
+    <a class="corner-left no-print" href="/" aria-label="Back to home">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </a>
+    
+    <!-- Theme toggle: cycles Light -> Dark -> System on click (theme.js) -->
+    <button id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+    <div class="margin">
+
+
+        <article class="content-container">
+
+            
+        <h1 class="title no-print">Design an Easy-to-Use Deep Learning Framework</h1>
+        <h1 class="title-print print-only">
+            Design an Easy-to-Use Deep Learning Framework
+        </h1>
+        <div class="subtitle">The design principles I learned as an open-source contributor</div>
+        <p class="print-only author-print">Haifeng Jin, April 2024</p>
+        <div class="date no-print">by <a href="/about" style="text-decoration: none;">Haifeng Jin</a>, April 2024</div>
+
+        <p>Deep learning frameworks are extremely transitory. If you compare the deep learning frameworks people use today with what it was eight years ago, you will find the landscape is completely different. There were Theano, Caffe2, and MXNet, which all went obsolete. Today's most popular frameworks, like TensorFlow and PyTorch, were just released to the public.</p>
+<p>Through all these years, Keras has survived as a high-level user-facing library supporting different backends, including TensorFlow, PyTorch, and JAX. Studying Keras closely, I learned how much the team cares about user experience for the software and how they ensured a good user experience by following a few simple yet powerful principles in their design process.</p>
+<p>In this article, I will share the 3 most important software design principles I learned from studying Keras over the past few years, which may be generalizable to all types of software and help you make an impact in the open-source community with yours.</p>
+<h2>Why user experience is important for open-source software</h2>
+<p>Before we dive into the main content, let's quickly discuss why user experience is so important. We can learn this through the PyTorch vs. TensorFlow case.</p>
+<p>They were developed by two tech giants, Meta and Google, and have quite different cultural strengths. Meta is good at product, while Google is good at engineering. As a result, Google's frameworks like TensorFlow and JAX are the fastest to run and technically superior to PyTorch, as they support sparse tensors and distributed training well. However, PyTorch still took away half of the market share from TensorFlow because it prioritizes user experience over other aspects of the software.</p>
+<p>Better user experience wins for the research scientists who build the models and propagate them to the engineers, who take models from them since they don't always want to convert the models they receive from the research scientists to another framework. They will build new software around PyTorch to smooth their workflow, which will establish a software ecosystem around PyTorch.</p>
+<p>TensorFlow also made a few blunders that caused its users to lose. TensorFlow's general user experience is good. However, its installation guide for GPU support was broken for years before it was fixed in 2022. TensorFlow 2 broke the backward compatibility, which cost its users millions of dollars to migrate.</p>
+<p>So, the lesson we learned here is that despite technical superiority, user experience decides which software the open-source users would choose.</p>
+<h2>All deep learning frameworks invest heavily in user experience</h2>
+<p>All the deep learning frameworks, TensorFlow, PyTorch, and JAX, invest heavily in user experience. Good evidence is that they all have a relatively high Python percentage in their codebases.</p>
+<p>All the core logic of deep learning frameworks, including tensor operations, automatic differentiation, compilation, and distribution are implemented in C++. Why would they want to expose a set of Python APIs to the users? It is just because the users love Python and they want to polish their user experience.</p>
+<h2>Investing in user experience is of high ROI</h2>
+<p>Imagine how much engineering effort it requires to make your deep learning framework a little bit faster than others. A lot.</p>
+<p>However, for a better user experience, as long as you follow a certain design process and some principles, you can achieve it. For attracting more users, your user experience is as important as the computing efficiency of your framework. So, investing in user experience is of high return on investment (ROI).</p>
+<h2>The three principles</h2>
+<p>I will share the three important software design principles I learned by contributing to Keras, each with good and bad code examples from different frameworks.</p>
+<h2>Principle 1: Design end-to-end workflows</h2>
+<p>When we think of designing the APIs of a piece of software, you may look like this.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The forward call of the model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          input: A tensor. The input to the model.</span>
+<span class="sd">        """</span>
+        <span class="k">pass</span>
+</code></pre></div>
+
+<p>Define the class and add the documentation. Now, we know all the class names, method names, and arguments. However, this would not help us understand much about the user experience.</p>
+<p>What we should do is something like this.</p>
+<div class="highlight"><pre><span></span><code><span class="nb">input</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">)(</span><span class="nb">input</span><span class="p">)</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'softmax'</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="s1">'adam'</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">'categorical_crossentropy'</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>We want to write out the entire user workflow of using the software. Ideally, it should be a tutorial on how to use the software. It provides much more information about the user experience. It may help us spot many more UX problems during the design phase compared with just writing out the class and methods.</p>
+<p>Let's look at another example. This is how I discovered a user experience problem by following this principle when implementing a hyperparameter tuning library.</p>
+<p>When using KerasTuner, users can use this RandomSearch class to select the best model. We have the metrics, and objectives in the arguments. By default, objective equals validation loss. So, it helps us find the model with the smallest validation loss.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RandomSearch</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">metrics</span><span class="p">,</span> <span class="n">objective</span><span class="o">=</span><span class="s2">"val_loss"</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""The initializer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            metrics: A list of Keras metrics.</span>
+<span class="sd">            objective: String or a custom metric function. The</span>
+<span class="sd">                name of the metirc we want to minimize.</span>
+<span class="sd">        """</span>
+        <span class="k">pass</span>
+</code></pre></div>
+
+<p>Again, it doesn't provide much information about the user experience. So, everything looks OK for now.</p>
+<p>However, if we write an end-to-end workflow like the following. It exposes many more problems. The user is trying to define a custom metric function named <code>custom_metric</code>. The objective is not so straightforward to use anymore. What should we pass to the objective argument now?</p>
+<div class="highlight"><pre><span></span><code><span class="n">tuner</span> <span class="o">=</span> <span class="n">RandomSearch</span><span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="n">custom_metric</span><span class="p">],</span>
+    <span class="n">objective</span><span class="o">=</span><span class="s2">"val_???"</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>It should be just <code>"val_custom_metric”</code>. Just use the prefix of <code>"val_"</code> and the name of the metric function. It is not intuitive enough. We want to make it better instead of forcing the user to learn this. We easily spotted a user experience problem by writing this workflow.</p>
+<p>If you wrote the design more comprehensively by including the implementation of the <code>custom_metric</code> function, you will find you even need to learn how to write a Keras custom metric. You have to follow the function signature to make it work, as shown in the following code snippet.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">custom_metric</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="n">squared_diff</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">y_true</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ops</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">squared_diff</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>After discovering this problem. We specially designed a better workflow for custom metrics. You only need to override <code>HyperModel.fit()</code> to compute your custom metric and return it. No strings to name the objective. No function signature to follow. Just a return value. The user experience is much better right now.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyHyperModel</span><span class="p">(</span><span class="n">HyperModel</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trial</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">validation_data</span><span class="p">):</span>
+        <span class="n">x_val</span><span class="p">,</span> <span class="n">y_true</span> <span class="o">=</span> <span class="n">validation_data</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">custom_metric</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+
+<span class="n">tuner</span> <span class="o">=</span> <span class="n">RandomSearch</span><span class="p">(</span><span class="n">MyHyperModel</span><span class="p">(),</span> <span class="n">max_trials</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div>
+
+<p>One more thing to remember is we should always start from the user experience. The designed workflows backpropagate to the implementation.</p>
+<h2>Principle 2: Minimize cognitive load</h2>
+<p>Do not force the user to learn anything unless it is really necessary. Let's see some good examples.</p>
+<p>The Keras modeling API is a good example shown in the following code snippet. The model builders already have these concepts in mind, for example, a model is a stack of layers. It needs a loss function. We can fit it with data or make it predict on data.</p>
+<div class="highlight"><pre><span></span><code><span class="n">model</span> <span class="o">=</span> <span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">"relu"</span><span class="p">),</span>
+    <span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">"softmax"</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">'categorical_crossentropy'</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+
+<p>So basically, no new concepts were learned to use Keras.</p>
+<p>Another good example is the PyTorch modeling. The code is executed just like Python code. All tensors are just real tensors with real values. You can depend on the value of a tensor to decide your path with plain Python code.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_a</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_b</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+
+<p>You can also do this with Keras with TensorFlow or JAX backend but needs to be written differently. All the if conditions need to be written with this ops.cond function as shown in the following code snippet.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyModel</span><span class="p">(</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ops</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span>
+            <span class="n">ops</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_a</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span>
+            <span class="k">lambda</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_b</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span>
+        <span class="p">)</span>
+</code></pre></div>
+
+<p>This is teaching the user to learn a new op instead of using the if-else clause they are familiar with, which is bad. In compensation, it brings significant improvement in training speed.</p>
+<p>Here is the catch of the flexibility of PyTorch. If you ever needed to optimize the memory and speed of your model, you would have to do it by yourself using the following APIs and new concepts to do so, including the inplace arguments for the ops, the parallel op APIs, and explicit device placement. It introduces a rather high learning curve for the users.</p>
+<div class="highlight"><pre><span></span><code><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">_foreach_add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">_foreach_add_</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">cuda</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Some other good examples are keras.ops, tensorflow.numpy, jax.numpy. They are just a reimplementation of the numpy API. When introducing some cognitive load, just reuse what people already know. Every framework has to provide some low-level ops in these frameworks. Instead of letting people learn a new set of APIs, which may have a hundred functions, they just use the most popular existing API for it. The numpy APIs are well-documented and have tons of Stack Overflow questions and answers related to it.</p>
+<p>The worst thing you can do with user experience is to trick the users. Trick the user to believe your API is something they are familiar with but it is not. I will give two examples. One is on PyTorch. The other one is on TensorFlow.</p>
+<p>What should we pass as the pad argument in <code>F.pad()</code> function if you want to pad the input tensor of the shape <code>(100, 3, 32, 32)</code> to <code>(100, 3, 1+32+1, 2+32+2)</code> or <code>(100, 3, 34, 36)</code>?</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="c1"># pad the 32x32 images to (1+32+1)x(2+32+2)</span>
+<span class="c1"># (100, 3, 32, 32) to (100, 3, 34, 36)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+    <span class="n">pad</span><span class="o">=</span><span class="err">???</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>My first intuition is that it should be <code>((0, 0), (0, 0), (1, 1), (2, 2))</code>, where each sub-tuple corresponds to one of the 4 dimensions, and the two numbers are the padding size before and after the existing values. My guess is originated from the numpy API.</p>
+<p>However, the correct answer is <code>(2, 2, 1, 1)</code>. There is no sub-tuple, but one plain tuple. Moreover, the dimensions are reversed. The last dimension goes the first.</p>
+<p>The following is a bad example from TensorFlow. Can you guess what is the output of the following code snippet?</p>
+<div class="highlight"><pre><span></span><code><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_value</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+<span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">get_value</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Without the <code>tf.function</code> decorator, the output should be <code>False</code>, which is pretty simple. However, with the decorator, the output is <code>True</code>. This is because TensorFlow compiles the function and any Python variable is compiled into a new constant. Changing the old variable's value would not affect the created constant.</p>
+<p>It tricks the user into believing it is the Python code they are familiar with, but actually, it is not.</p>
+<h2>Principle 3: Interaction over documentation</h2>
+<p>No one likes to read long documentation if they can figure it out just by running some example code and tweaking it by themselves. So, we try to make the user workflow of the software follow the same logic.</p>
+<p>Here is a good example shown in the following code snippet. In PyTorch, all methods with the underscore are inplace ops, while the ones without are not. From an interactive perspective, these are good, because they are easy to follow, and the users do not need to check the docs whenever they want the inplace version of a method. However, of course, they introduced some cognitive load. The users need to know what does inplace means and when to use them.</p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">add_</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mul</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">x</span><span class="o">.</span><span class="n">mul_</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Another good example is the Keras layers. They strictly follow the same naming convention as shown in the following code snippet. With a clear naming convention, the users can easily remember the layer names without checking the documentation.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">keras</span><span class="w"> </span><span class="kn">import</span> <span class="n">layers</span>
+
+<span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">()</span>
+<span class="n">layers</span><span class="o">.</span><span class="n">GlobalMaxPooling1D</span><span class="p">()</span>
+<span class="n">layers</span><span class="o">.</span><span class="n">GlobalAveragePooling3D</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Another important part of the interaction between the user and the software is the error message. You cannot expect the user to write everything correctly the very first time. We should always do the necessary checks in the code and try to print helpful error messages.</p>
+<p>Let's see the following two examples shown in the code snippet. The first one has not much information. It just says tensor shape mismatch. The
+second one contains much more useful information for the user to find the bug. It not only tells you the error is because of tensor shape mismatch, but it also shows what is the expected shape and what is the wrong shape it received. If you did not mean to pass that shape, you have a better idea
+of the bug now.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Bad example:</span>
+<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Tensor shape mismatch."</span><span class="p">)</span>
+
+<span class="c1"># Good example:</span>
+<span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+    <span class="s2">"Tensor shape mismatch. "</span>
+    <span class="s2">"Expected: (batch, num_features). "</span>
+    <span class="sa">f</span><span class="s2">"Received: </span><span class="si">{</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<p>The best error message would be directly pointing the user to the fix. The following code snippet shows a general Python error message. It guessed what was wrong with the code and directly pointed the user to the fix.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="n">math</span><span class="o">.</span><span class="n">sqr</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>AttributeError: module 'math' has no attribute 'sqr'.
+Did you mean: 'sqrt'?
+</code></pre></div>
+
+<h2>Final words</h2>
+<p>So far we have introduced the three most valuable software design principles I have learned when contributing to the deep learning frameworks. First, write end-to-end workflows to discover more user experience problems. Second, reduce cognitive load and do not teach the user anything unless necessary. Third, follow the same logic in your API design and throw meaningful error messages so that the users can learn your software by interacting with it instead of constantly checking the documentation.</p>
+<p>However, there are many more principles to follow if you want to make your software even better. You can refer to the <a href="https://github.com/keras-team/governance/blob/24401c1addf521e522fd363f6eb40e7c4c4881d5/keras_api_design_guidelines.md">Keras API design guidelines</a> as a complete API design guide.</p>
+
+        <div style="text-align: center; margin: 2em; display: flex; justify-content: center; align-items: center;">
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'});" style="background: none; border: none; cursor: pointer; padding: 0; color: var(--dark-gray-text-color); display: flex;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-arrow-up-circle" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707z"/>
+                </svg>
+            </button>
+        </div>
+
+        </article>
+
+        <footer>
+            <div class="footer-content">
+                &copy; 2022–<span id="year"></span> Haifeng Jin.<br>All rights reserved.<br>
+                <a href="/about">About</a> &bull; <a href="/privacy-policy">Privacy Policy</a> &bull; <a href="/feed.xml">RSS</a>
+            </div>
+        </footer>
+        <script>
+            document.getElementById("year").textContent = new Date().getFullYear();
+        </script>
+    </div>
+    <script src="/assets/js/theme.js"></script>
+</body>
+</html>

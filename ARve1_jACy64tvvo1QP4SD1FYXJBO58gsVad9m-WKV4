@@ -1,0 +1,50 @@
+Use the Python code to decrypt the messages:
+
+Message1: gAAAAABnh1o_IickBdffcptcrs29l8DBn5wnKZhQ7mvnlN9OFLui511WqTpxRA6-87QQ8wloSyLAqJCNA172W4vK4YWdbD_V3ScyNjAa5nq8lYKRr0q03O1Tiv5CJVJwQ9zaSRLRvZkFB7GLPt4-U-KbwAxFtKB_1fGnT1STKqCS-l_wlgrRbQ8vM3mVBEiyHxvVYDLwEii5f3_kWWRqzFb0XJlvxwJqmEsVIF9AU1fayJYTctYiqWI=
+
+Message2: gAAAAABnh1uIcEVxM9C44xXikI7G16S3MdcF__O3-l6SlgbDrH1TX9KihPTqbaKVsbV1Ox_UuG1gSMxix_XE9TlmACVWqHh7CRLXPs_pX7ASC75EPqo0rHtwekSNRpspwetTepEWEYNvowlICLbjv3tla-M0Sgi6F9oCs_-GOfhijkfhbGqqvpWQhv8D9gzJP6I63zVbua6THNeWTEcFK5VnKU5HDRhH9Rf5hVNoTcZ4wYq-KHvp7jMFxgKe8DLxVPXN02xOXgeFqC_MsP6y8vl-LEEhvRk-ptymxibRj8MbXdD2VhTMdLE4_UjbS_5gWLv3sGzRhxkDkca4tnu6PQ3Y9bTcJjfKJQ==
+
+Message3: gAAAAABnh1wn7qXie82t3hMpV2DutrlKkn1dgkg00X26ldUif19QAeVQBagXGWAB0YhodNl338Iqvi4WnIFZgq4guQUFIhX6-GRKtYmKFKhPMu9BCQFEZnkXPmtfLGrQARFx68cmlf3TWcO7EIeYhxwndrqrFr5Kh61tcotqUncIjldFg76eL6f6Ki_4MoLEX0LbRquxORJRDZm6nS7NKUjVfGKePqgSLgcPRwtoAuAXyXpBp_7A_KGK5U23a_SrYAFAuY6yMM0N
+
+```py
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+import base64
+from cryptography.hazmat.backends import default_backend
+
+SALT = b'T\xf4\xfa\x8ai=\x0e\x19\xe5\x93\xd1v\xd7\xd5\xfd@'
+
+def generate_key_from_word(word, salt):
+  """
+  Generates a Fernet key from a word using PBKDF2HMAC.
+  """
+  word = word.encode()  # Convert the word to bytes
+  kdf = PBKDF2HMAC(
+      algorithm=hashes.SHA256(),
+      length=32,
+      salt=salt,
+      iterations=390000,
+      backend=default_backend()
+  )
+  key = base64.urlsafe_b64encode(kdf.derive(word))  # Derive the key
+  return key
+
+def encrypt():
+    message = input("Enter the message to encrypt: ")
+    word = input("Enter your word key: ")
+    key = generate_key_from_word(word, SALT)  # Generate Fernet key from word
+    encrypted_message = Fernet(key).encrypt(message.encode())
+    print("Encrypted:", encrypted_message.decode())
+
+
+def decrypt():
+    encrypted_message = input("Enter the encrypted message to decrypt: ")
+    word = input("Enter your word key: ")
+    key = generate_key_from_word(word, SALT)  # Regenerate the same Fernet key using the same salt
+    decrypted_message = Fernet(key).decrypt(encrypted_message).decode()
+    print("Decrypted:", decrypted_message)
+
+# encrypt()
+decrypt()
+```

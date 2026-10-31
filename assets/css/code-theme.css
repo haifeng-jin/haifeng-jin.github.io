@@ -1,0 +1,63 @@
+/* Pygments (via codehilite) does the tokenizing; the colors below are
+ * hand-mapped from the site's original 11ty-era Prism "One Dark/One Light"
+ * theme onto Pygments' short token class names, so the two match instead of
+ * using a Pygments bundled style. Font-size/line-height are carried over
+ * from that theme too. */
+:root {
+    --mono-0: hsl(220, 14%, 88%);
+    --mono-2: hsl(220, 9%, 55%);
+    --mono-3: hsl(220, 10%, 40%);
+    --hue-1: hsl(187, 47%, 55%);
+    --hue-2: hsl(207, 82%, 66%);
+    --hue-3: hsl(286, 60%, 67%);
+    --hue-4: hsl(95, 38%, 62%);
+    --hue-5: hsl(355, 65%, 65%);
+    --hue-6: hsl(29, 54%, 61%);
+    --syntax-fg: hsl(220, 14%, 71%);
+    --syntax-bg: hsl(0, 0%, 100%, 0.1);
+    --syntax-editor-bg: hsl(220, 13%, 18%);
+}
+[data-theme="light"] {
+    --mono-0: hsl(230, 8%, 20%);
+    --mono-2: hsl(230, 6%, 44%);
+    --mono-3: hsl(230, 4%, 64%);
+    --hue-1: hsl(198, 99%, 37%);
+    --hue-2: hsl(221, 87%, 60%);
+    --hue-3: hsl(301, 63%, 40%);
+    --hue-4: hsl(119, 34%, 47%);
+    --hue-5: hsl(5, 74%, 59%);
+    --hue-6: hsl(35, 99%, 36%);
+    --syntax-fg: hsl(230, 8%, 24%);
+    --syntax-bg: hsl(0, 0%, 0%, 0.1);
+    --syntax-editor-bg: hsl(230, 1%, 98%);
+}
+.highlight {
+    background: var(--syntax-bg);
+    color: var(--syntax-fg);
+    font-family: var(--main-font);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 1em;
+    margin: 0.5em 0;
+    overflow: auto;
+    border-radius: 0.3em;
+}
+.highlight pre, .highlight code {
+    margin: 0;
+    background: transparent;
+    font-family: var(--main-font);
+    font-size: 14px;
+    line-height: 1.5;
+}
+.highlight .c1, .highlight .cm { color: var(--mono-3); font-style: italic; } /* Comment */
+.highlight .k, .highlight .kc, .highlight .kd, .highlight .kn,
+.highlight .kp, .highlight .kr, .highlight .kt { color: var(--hue-3); } /* Keyword */
+.highlight .nb, .highlight .bp { color: var(--hue-4); } /* Builtin */
+.highlight .nc, .highlight .nd { color: var(--hue-6); } /* Class / Decorator */
+.highlight .nf, .highlight .fm, .highlight .o { color: var(--hue-2); } /* Function / Operator */
+.highlight .ne { color: var(--hue-5); } /* Exception */
+.highlight .s, .highlight .s1, .highlight .s2,
+.highlight .sa, .highlight .sd, .highlight .si { color: var(--hue-4); } /* String */
+.highlight .mi, .highlight .mf { color: var(--hue-6); } /* Number */
+.highlight .n, .highlight .nn, .highlight .p, .highlight .w { color: var(--syntax-fg); } /* Name / Punctuation */
+.highlight .err { color: inherit; background: none; } /* Lexer quirks, not real errors */
